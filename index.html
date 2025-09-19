@@ -30,14 +30,14 @@
     <h1>MSE from Bias and Variance (Sample Means)</h1>
     <p class="note">
       Treat a small list of <b>sample means</b> as repeated estimates of μ. Compute
-      <b>bias</b> (how far the average estimate is from μ) and <b>variance</b> (how spread out the estimates are),
+      <b>bias</b> (how far the mean estimate is from μ) and <b>variance</b> (how spread out the estimates are),
       then combine them: <span class="mono">MSE = Bias² + Variance</span>.
     </p>
 
     <!-- Formulas -->
     <section class="card">
       <h2>Formulas</h2>
-      <p class="mono">Given x̄₁, …, x̄ₙ, the average of the sample means is x̄_avg = (1/n) Σ x̄ᵢ.</p>
+      <p class="mono">Given x̄₁, …, x̄ₙ, the average(mean) of the sample means is x̄_avg = (1/n) Σ x̄ᵢ.</p>
       <p class="mono">Bias = x̄_avg − μ</p>
       <p class="mono">Variance = (1/n) Σ (x̄ᵢ − x̄_avg)²  <i>or</i>  (1/(n−1)) Σ (x̄ᵢ − x̄_avg)²</p>
       <p class="mono"><b>MSE = Bias² + Variance</b></p>
@@ -52,7 +52,7 @@
           <tr><th style="text-align:left;">Label</th><th>Values</th></tr>
         </thead>
         <tbody>
-          <tr><td style="text-align:left;">Sample means (5 runs)</td><td>4.8, 5.1, 5.3, 4.9, 5.0</td></tr>
+          <tr><td style="text-align:left;">5 sample mean(x̄)s</td><td>4.8, 5.1, 5.3, 4.9, 5.0</td></tr>
           <tr><td style="text-align:left;">x̄_avg</td><td>5.02</td></tr>
         </tbody>
       </table>
