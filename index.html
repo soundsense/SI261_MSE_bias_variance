@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MSE from Bias and Variance (Sample Means)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { --ink:#0f172a; --blue:#0369a1; --muted:#f1f5f9; --bg:#f8fafc; --card:#fff; --line:#e5e7eb; --pill:#e0f2fe; --good:#065f46; --goodbg:#ecfdf5; --warn:#991b1b; --warnbg:#fee2e2; }
+    body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--ink); }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 24px; }
+    h1 { color:var(--blue); margin:0 0 8px; }
+    h2 { margin: 8px 0; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius: 12px; padding: 16px; margin: 16px 0; box-shadow:0 1px 4px rgba(0,0,0,0.05); }
+    .pill { display:inline-block; background:var(--pill); padding:6px 10px; border-radius:999px; margin:3px; font-weight:600; }
+    table { width:100%; border-collapse: collapse; margin-top:12px; }
+    th, td { border:1px solid var(--line); padding:8px; text-align:center; }
+    th { background:var(--muted); }
+    input, select { width:110px; max-width:32vw; padding:4px; border:1px solid var(--line); border-radius:6px; text-align:center; }
+    .btn { background:var(--blue); color:#fff; border:0; border-radius:6px; padding:6px 12px; cursor:pointer; margin-top:8px; }
+    .result { margin-top:6px; padding:6px; background:var(--bg); border:1px solid var(--line); border-radius:6px; }
+    .success { background:var(--goodbg); border:1px solid #bbf7d0; color:var(--good); border-radius:8px; padding:10px; margin-top:12px; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    .note { font-size: 0.95rem; color:#334155; }
+    .gate { background:var(--warnbg); border:1px solid #fecaca; color:var(--warn); border-radius:8px; padding:10px; margin-top:8px; display:none; }
+    .row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>MSE from Bias and Variance (Sample Means)</h1>
+    <p class="note">
+      Treat a small list of <b>sample means</b> as repeated estimates of μ. Compute
+      <b>bias</b> (how far the average estimate is from μ) and <b>variance</b> (how spread out the estimates are),
+      then combine them: <span class="mono">MSE = Bias² + Variance</span>.
+    </p>
+
+    <!-- Formulas -->
+    <section class="card">
+      <h2>Formulas</h2>
+      <p class="mono">Given x̄₁, …, x̄ₙ, the average of the sample means is x̄_avg = (1/n) Σ x̄ᵢ.</p>
+      <p class="mono">Bias = x̄_avg − μ</p>
+      <p class="mono">Variance (across runs) = either (1/n) Σ (x̄ᵢ − x̄_avg)²  <i>or</i>  (1/(n−1)) Σ (x̄ᵢ − x̄_avg)²</p>
+      <p class="mono"><b>MSE = Bias² + Variance</b></p>
+      <p class="note">Use the toggle below in the practice to switch between dividing by <b>n</b> (population) and <b>n−1</b> (sample).</p>
+    </section>
+
+    <!-- Example Walkthrough -->
+    <section class="card">
+      <h2>Example Walkthrough</h2>
+      <table class="tight">
+        <thead>
+          <tr><th style="text-align:left;">Label</th><th>Values</th></tr>
+        </thead>
+        <tbody>
+          <tr><td style="text-align:left;">Sample means (5 runs)</td><td>4.8, 5.1, 5.3, 4.9, 5.0</td></tr>
+          <tr><td style="text-align:left;">x̄_avg</td><td>5.02</td></tr>
+        </tbody>
+      </table>
+      <p class="tight">Assume population mean μ = <b>5.00</b></p>
+
+      <table>
+        <thead>
+          <tr><th>x̄ᵢ</th><th>x̄_avg</th><th>x̄ᵢ − x̄_avg</th><th>(x̄ᵢ − x̄_avg)²</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>4.8</td><td>5.02</td><td>-0.22</td><td>0.0484</td></tr>
+          <tr><td>5.1</td><td>5.02</td><td>0.08</td><td>0.0064</td></tr>
+          <tr><td>5.3</td><td>5.02</td><td>0.28</td><td>0.0784</td></tr>
+          <tr><td>4.9</td><td>5.02</td><td>-0.12</td><td>0.0144</td></tr>
+          <tr><td>5.0</td><td>5.02</td><td>-0.02</td><td>0.0004</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><th colspan="3">Sum of squares</th><th>0.1480</th></tr>
+        </tfoot>
+      </table>
+      <p class="mono">Population variance (÷n): 0.1480 ÷ 5 = <b>0.0296</b></p>
+      <p class="mono">Bias = 5.02 − 5.00 = <b>0.02</b> ⇒ Bias² = <b>0.0004</b></p>
+      <p class="mono"><b>MSE (÷n) = 0.0004 + 0.0296 = 0.0300</b></p>
+      <p class="note">If you used ÷(n−1), the variance would be 0.0370 and the MSE would be 0.0374.</p>
+    </section>
+
+    <!-- Practice -->
+    <section class="card">
+      <h2>Practice Yourself</h2>
+      <p>Sample means from 5 runs: <span class="pill">3</span><span class="pill">5</span><span class="pill">8</span><span class="pill">2</span><span class="pill">7</span></p>
+      <p>Assume population mean μ = <b>5</b></p>
+
+      <!-- Step 1 -->
+      <p><b>Step 1: Average of the sample means (x̄_avg)</b></p>
+      <div class="mono">
+        x̄_avg = (3 + 5 + 8 + 2 + 7) ÷ 5 =
+        <input id="meanInput" type="number" step="0.01" placeholder="your x̄_avg">
+        <button class="btn" id="btnMean">Check</button>
+      </div>
+      <div id="meanOut" class="result"></div>
+
+      <!-- Step 2 -->
+      <p style="margin-top:10px;"><b>Step 2: Deviations from x̄_avg and squares</b></p>
+      <table>
+        <thead>
+          <tr><th>x̄ᵢ</th><th>x̄_avg</th><th>x̄ᵢ − x̄_avg</th><th>(x̄ᵢ − x̄_avg)²</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>3</td><td><input id="m1" placeholder="x̄_avg"></td><td><input id="d1" placeholder="diff"></td><td><input id="s1" placeholder="square"></td></tr>
+          <tr><td>5</td><td><input id="m2" placeholder="x̄_avg"></td><td><input id="d2" placeholder="diff"></td><td><input id="s2" placeholder="square"></td></tr>
+          <tr><td>8</td><td><input id="m3" placeholder="x̄_avg"></td><td><input id="d3" placeholder="diff"></td><td><input id="s3" placeholder="square"></td></tr>
+          <tr><td>2</td><td><input id="m4" placeholder="x̄_avg"></td><td><input id="d4" placeholder="diff"></td><td><input id="s4" placeholder="square"></td></tr>
+          <tr><td>7</td><td><input id="m5" placeholder="x̄_avg"></td><td><input id="d5" placeholder="diff"></td><td><input id="s5" placeholder="square"></td></tr>
+        </tbody>
+        <tfoot>
+          <tr><th colspan="3">Sum of squares</th><th><input id="sumSquares" placeholder="total"></th></tr>
+        </tfoot>
+      </table>
+      <button class="btn" id="btnTable">Check Table</button>
+      <div id="tableOut" class="result"></div>
+
+      <!-- Step 3 -->
+      <p><b>Step 3: Variance across runs</b></p>
+      <div class="row mono" style="gap:12px;">
+        <label for="varMode"><b>Variance formula:</b></label>
+        <select id="varMode">
+          <option value="n" selected>Divide by n (population)</option>
+          <option value="n1">Divide by n−1 (sample)</option>
+        </select>
+      </div>
+      <div class="mono" style="margin-top:6px;">
+        Variance =
+        (<input id="varSS" placeholder="sum of squares"> ÷
+        <input id="varDen" placeholder="denominator">)
+        <button class="btn" id="btnVar">Compute Variance</button>
+      </div>
+      <div id="varOut" class="result"></div>
+      <div id="varGate" class="gate">Complete and <b>check</b> the table first.</div>
+      <!-- HINT (hidden by default) -->
+      <p id="varHint" class="note" style="display:none;">
+        For these data: sum of squares should be 26. With n=5 ⇒ variance=5.20; with n−1=4 ⇒ variance=6.50.
+      </p>
+
+      <!-- Step 4 -->
+      <p><b>Step 4: Bias</b></p>
+      <div class="mono">
+        Bias = x̄_avg − μ =
+        <input id="biasIn" type="number" step="0.01" placeholder="your bias">
+        <button class="btn" id="btnBias">Check Bias</button>
+      </div>
+      <div id="biasOut" class="result"></div>
+      <div id="biasGate" class="gate">Compute and <b>check</b> the mean first.</div>
+
+      <!-- Step 5 -->
+      <p><b>Step 5: MSE</b></p>
+      <div class="mono">
+        MSE =
+        <input id="mseBias2" type="number" step="0.01" placeholder="bias²"> + 
+        <input id="mseVar" type="number" step="0.01" placeholder="variance"> =
+        <button class="btn" id="btnMSE">Compute MSE</button>
+      </div>
+      <div id="mseOut" class="result"></div>
+      <div id="mseGate" class="gate">Please finish and check the previous steps (variance & bias) first.</div>
+
+      <div id="congrats" class="success" style="display:none;">
+        🎉 Great work! You computed Bias, Variance, and MSE correctly.
+      </div>
+
+      <div style="margin-top:12px;">
+        <button class="btn" id="btnReset">Reset All Inputs</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', function(){
+      const correct = {
+        mean: 5.00,
+        diffs: [-2, 0, 3, -3, 2],
+        squares: [4, 0, 9, 9, 4],
+        sumSquares: 26,
+        n: 5,
+        var_n: 26/5,     // 5.20
+        var_n1: 26/4,    // 6.50
+        mu: 5,
+        bias: 0,
+        bias2: 0,
+        mse_n: 5.20,
+        mse_n1: 6.50
+      };
+
+      const tol = 0.01;
+      const close = (a,b)=>Math.abs(a-b)<=tol;
+      let meanOK=false, tableOK=false, varOK=false, biasOK=false;
+      const num = id => parseFloat(document.getElementById(id).value);
+
+      // Step 1
+      document.getElementById('btnMean').addEventListener('click', function(){
+        const val = num('meanInput');
+        const out = document.getElementById('meanOut');
+        meanOK = close(val, correct.mean);
+        out.textContent = meanOK ? "✅ Correct! x̄_avg = 5.00" : "❌ Try again. Hint: (3+5+8+2+7)/5";
+      });
+
+      // Step 2
+      function isTableCorrect(){
+        const meanEntered = num('meanInput');
+        if (!close(meanEntered, correct.mean)) return false;
+        for (let i=1;i<=5;i++){
+          const m = num('m'+i), d = num('d'+i), s = num('s'+i);
+          if (!close(m, meanEntered)) return false;
+          if (!close(d, correct.diffs[i-1])) return false;
+          if (!close(s, correct.squares[i-1])) return false;
+        }
+        return close(num('sumSquares'), correct.sumSquares);
+      }
+      document.getElementById('btnTable').addEventListener('click', function(){
+        tableOK = isTableCorrect();
+        document.getElementById('tableOut').textContent = tableOK
+          ? "✅ Table correct!"
+          : "❌ Check the x̄_avg column, differences, squares, or the total.";
+        document.getElementById('varGate').style.display = tableOK ? "none" : "block";
+        // Hide hint if they fix the table
+        if (tableOK) document.getElementById('varHint').style.display = "none";
+      });
+
+      // Step 3 — show hint only when variance is wrong
+      document.getElementById('btnVar').addEventListener('click', function(){
+        const gate = document.getElementById('varGate');
+        const out  = document.getElementById('varOut');
+        const hint = document.getElementById('varHint');
+
+        if (!tableOK){
+          gate.style.display = "block";
+          out.textContent = "";
+          document.getElementById('varHint').style.display = "none";
+          varOK = false;
+          return;
+        } else {
+          gate.style.display = "none";
+        }
+
+        const mode = document.getElementById('varMode').value; // 'n' or 'n1'
+        const ss  = num('varSS');
+        const den = num('varDen');
+
+        if (Number.isNaN(ss) || Number.isNaN(den) || den <= 0){
+          out.textContent = "❌ Please enter sum of squares and a positive denominator.";
+          hint.style.display = "none"; // missing inputs: don't reveal the hint
+          varOK = false;
+          return;
+        }
+
+        const expectedDen = (mode === 'n') ? correct.n : (correct.n - 1);
+        const v = ss / den;
+        out.textContent = "Variance = " + v.toFixed(2) + (close(den, expectedDen) ? "" : "  (⚠️ check your denominator)");
+        const target = (mode === 'n') ? correct.var_n : correct.var_n1;
+
+        varOK = close(v, target);
+        // Show hint only if wrong; hide if correct
+        hint.style.display = varOK ? "none" : "block";
+      });
+
+      // Step 4
+      document.getElementById('btnBias').addEventListener('click', function(){
+        const gate = document.getElementById('biasGate');
+        const out  = document.getElementById('biasOut');
+        if (!meanOK){ gate.style.display="block"; out.textContent=""; biasOK=false; return; }
+        gate.style.display="none";
+
+        const b = num('biasIn');
+        if (Number.isNaN(b)){ out.textContent="❌ Enter the bias value."; biasOK=false; return; }
+        out.textContent = "Bias = " + b.toFixed(2) + " ⇒ Bias² = " + (b*b).toFixed(2);
+        biasOK = close(b, correct.bias);
+      });
+
+      // Step 5
+      document.getElementById('btnMSE').addEventListener('click', function(){
+        const gate = document.getElementById('mseGate');
+        const out  = document.getElementById('mseOut');
+        const congrats = document.getElementById('congrats');
+        if (!varOK || !biasOK){ gate.style.display="block"; out.textContent=""; congrats.style.display="none"; return; }
+        gate.style.display="none";
+
+        const b2 = num('mseBias2'), vv = num('mseVar');
+        if (Number.isNaN(b2) || Number.isNaN(vv) || vv<0 || b2<0){ out.textContent="❌ Enter non-negative numbers for bias² and variance."; congrats.style.display="none"; return; }
+        const mse = b2 + vv;
+        out.textContent = "MSE = " + mse.toFixed(2);
+        const targetMSE = (document.getElementById('varMode').value==='n') ? correct.mse_n : correct.mse_n1;
+        congrats.style.display = close(mse, targetMSE) ? "block" : "none";
+      });
+
+      // Reset
+      document.getElementById('btnReset').addEventListener('click', function(){
+        [
+          'meanInput','m1','m2','m3','m4','m5','d1','d2','d3','d4','d5','s1','s2','s3','s4','s5',
+          'sumSquares','varSS','varDen','biasIn','mseBias2','mseVar'
+        ].forEach(id => { const el=document.getElementById(id); if(el) el.value=""; });
+        ['meanOut','tableOut','varOut','biasOut','mseOut'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=""; });
+        ['varGate','biasGate','mseGate'].forEach(id => { const el=document.getElementById(id); if(el) el.style.display="none"; });
+        document.getElementById('varHint').style.display = "none"; // hide hint on reset
+        document.getElementById('congrats').style.display="none";
+        document.getElementById('varMode').value='n';
+        meanOK=tableOK=varOK=biasOK=false;
+      });
+    });
+  </script>
+</body>
+</html>
